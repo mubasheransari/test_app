@@ -15,7 +15,7 @@ void main() async {
         final categoriesBloc = CategoriesBloc();
         categoriesBloc.add(GetProducts());
         categoriesBloc.add(GetCategories());
-        categoriesBloc.add(GetCategoriesBeauty());
+      //  categoriesBloc.add(GetCategoriesBeauty());
         return categoriesBloc;
       },
       child: MyApp(),

@@ -43,3 +43,8 @@ class RemoveFromFavourites extends CategoriesEvent {
   final int productId;
   RemoveFromFavourites({required this.productId});
 }
+
+class CategoriesDetails extends CategoriesEvent {
+  String url;
+  CategoriesDetails({required this.url});
+}

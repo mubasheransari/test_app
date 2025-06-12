@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
+import 'package:test_app/widgets/product_card.dart';
 import '../bloc/categories_bloc.dart';
 import '../bloc/categories_state.dart';
 
@@ -16,72 +16,29 @@ class _CategoryBeautyViewState extends State<CategoryBeautyView> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: BlocBuilder<CategoriesBloc, CategoriesState>(
-        builder: (context, state) {
-          if (state.categoriesBeautyEnum == CategoriesBeautyEnum.loaded) {
-            return GridView.builder(
-              padding: const EdgeInsets.all(16.0),
-              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 2,
-                crossAxisSpacing: 16.0,
-                mainAxisSpacing: 16.0,
-              ),
-              itemCount: state.beautyCatregoryModel!.length,
-              itemBuilder: (context, index) {
-                var beautyProduct = state.beautyCatregoryModel![index];
-                return Text(state.categoriesBeautyEnum.toString());
-                // ListView.builder(
-                //     itemCount: 2,
-                //     //  state.beautyCatregoryModel![index].products!.length,
-                //     itemBuilder: (context, indexx) {
-                //       return Text("abcd");
-                //     });
-
-                // Text(
-                //   state.beautyCatregoryModel![index].products![index].price.toString(),
-                // );
-              },
-            );
-          } else if (state.categoriesBeautyEnum ==
-              CategoriesBeautyEnum.loading) {
-            return const Center(child: CircularProgressIndicator());
-          }
-
-          // } else if (state.categoriesBeautyEnum == CategoriesBeautyEnum.error) {
-          //   return Center(child: Text('Something went wrong'));
-          // }
-          else {
-            return const Center(child: Text('No data found'));
-          }
-        },
-      ),
+          builder: (context, state) {
+        return state.categoriesBeautyEnum == CategoriesBeautyEnum.loaded
+            ? ListView.builder(
+                itemCount: state.beautyCatregoryModel!.products.length,
+                itemBuilder: (context, index) {
+                  return ProductCard(
+                    imagePath: state
+                        .beautyCatregoryModel!.products[index].thumbnail
+                        .toString(),
+                    title: state.beautyCatregoryModel!.products[index].title
+                        .toString(),
+                    rating: state.beautyCatregoryModel!.products[index].rating!
+                        .toDouble(),
+                    price: state.beautyCatregoryModel!.products[index].price!
+                        .toDouble(),
+                    brand: "",
+                    category: state
+                        .beautyCatregoryModel!.products[index].category!
+                        .toString(),
+                  );
+                })
+            : const Center(child: Text('No data found'));
+      }),
     );
   }
-
-  // @override
-  // Widget build(BuildContext context) {
-  //   return Scaffold(
-  //     body: BlocBuilder<CategoriesBloc, CategoriesState>(
-  //         builder: (context, state) {
-  //       return GridView.builder(
-  //         padding: const EdgeInsets.all(16.0),
-  //         gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-  //           crossAxisCount: 2,
-  //           crossAxisSpacing: 16.0,
-  //           mainAxisSpacing: 16.0,
-  //         ),
-  //         itemCount: state.beautyCatregoryModel!.length,
-  //         itemBuilder: (context, index) {
-  //           return
-  //           Text(state
-  //               .beautyCatregoryModel![index].products![index].brand
-  //               .toString());
-  //           // CategoryItem(
-  //           //   image: state.categoryModel![index].url.toString(),
-  //           //   name: state.categoryModel![index].name.toString(),
-  //           // );
-  //         },
-  //       );
-  //     }),
-  //   );
-  // }
 }

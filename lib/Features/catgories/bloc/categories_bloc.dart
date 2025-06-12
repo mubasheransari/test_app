@@ -2,18 +2,20 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:test_app/Features/catgories/bloc/categories_event.dart';
 import 'package:test_app/Features/catgories/bloc/categories_state.dart';
 
+import '../../../Models/CategoryModel/beauty_category.dart';
 import '../../../Models/ProductsModel/products_model.dart';
 import '../../../Repositories/catgories_repository.dart';
 
 class CategoriesBloc extends Bloc<CategoriesEvent, CategoriesState> {
   CategoriesBloc() : super(CategoriesState()) {
     on<GetCategories>(getCategories);
-    on<GetCategoriesBeauty>(getCateogoriesBeauty);
+  //  on<GetCategoriesBeauty>(getCateogoriesBeauty);
     on<GetProducts>(getProducts);
     on<GetProductsImageDetails>(getProductsImageDetails);
     on<SearchProducts>(searchProducts);
     on<AddToFavourites>(addToFavourites);
     on<RemoveFromFavourites>(removeFromFavourites);
+    on<CategoriesDetails>(getCategoryDetail);
   }
 
   CategoriesRepository categoriesRepository = CategoriesRepository();
@@ -28,26 +30,25 @@ class CategoriesBloc extends Bloc<CategoriesEvent, CategoriesState> {
     } catch (e) {
       print('Error: $e');
       emit(state.copyWith(
-        categoriesEnum: CategoriesEnum.initial, 
+        categoriesEnum: CategoriesEnum.initial,
       ));
     }
   }
 
-  getCateogoriesBeauty(GetCategoriesBeauty event, emit) async {
-    try {
-      final categories = await categoriesRepository.getCategoriesBeauty();
-      emit(state.copyWith(
-        beautyCatregoryModel: categories, 
-        categoriesBeautyEnum: CategoriesBeautyEnum.loaded,
-      ));
-    } catch (e) {
-      print('Error: $e');
-      emit(state.copyWith(
-        categoriesBeautyEnum:
-            CategoriesBeautyEnum.initial, 
-      ));
-    }
-  }
+  // getCateogoriesBeauty(GetCategoriesBeauty event, emit) async {
+  //   try {
+  //     final categories = await categoriesRepository.getCategoriesBeauty();
+  //     emit(state.copyWith(
+  //       beautyCatregoryModel: categories,
+  //       categoriesBeautyEnum: CategoriesBeautyEnum.loaded,
+  //     ));
+  //   } catch (e) {
+  //     print('Error: $e');
+  //     emit(state.copyWith(
+  //       categoriesBeautyEnum: CategoriesBeautyEnum.initial,
+  //     ));
+  //   }
+  // }
 
   getProducts(GetProducts event, emit) async {
     emit(state.copyWith(
@@ -80,7 +81,7 @@ class CategoriesBloc extends Bloc<CategoriesEvent, CategoriesState> {
       print("getProductsImageDetails $products");
       print("getProductsImageDetails $products");
       emit(state.copyWith(
-        productImagesModel: products, 
+        productImagesModel: products,
         productDetailsEnum: ProductDetailsEnum.loaded,
       ));
     } catch (e) {
@@ -117,5 +118,25 @@ class CategoriesBloc extends Bloc<CategoriesEvent, CategoriesState> {
       ..removeWhere((product) => product.id == event.productId);
 
     emit(state.copyWith(favouriteProducts: updatedFavourites));
+  }
+
+  getCategoryDetail(CategoriesDetails event, emit) async {
+    emit(state.copyWith(
+      categoriesBeautyEnum: CategoriesBeautyEnum.initial,
+    ));
+    try {
+     BeautyCatregoryModel category = await CategoriesRepository().fetchCategory(event.url);
+
+
+      emit(state.copyWith(
+        beautyCatregoryModel: category,
+        categoriesBeautyEnum: CategoriesBeautyEnum.loaded,
+      ));
+    } catch (e) {
+      print('Error: $e');
+      emit(state.copyWith(
+        categoriesBeautyEnum: CategoriesBeautyEnum.initial,
+      ));
+    }
   }
 }

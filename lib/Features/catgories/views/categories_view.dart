@@ -46,35 +46,23 @@ class _CategoriesViewState extends State<CategoriesView> {
               ),
               itemCount: state.categoryModel!.length,
               itemBuilder: (context, index) {
-                List<String> imageUrls = [
-                  'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTutZm1WGmd8M54snkk3p74GZCZvkv7hBI6QA&s',
-                  'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQiGbixcyBsq_epYWIP8tt2A2OAYS62MkhV6A&s',
-                  'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTutZm1WGmd8M54snkk3p74GZCZvkv7hBI6QA&s',
-                  'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTutZm1WGmd8M54snkk3p74GZCZvkv7hBI6QA&s',
-                  'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTutZm1WGmd8M54snkk3p74GZCZvkv7hBI6QA&s',
-                  'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTutZm1WGmd8M54snkk3p74GZCZvkv7hBI6QA&s',
-                  'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTutZm1WGmd8M54snkk3p74GZCZvkv7hBI6QA&s',
-                  'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTutZm1WGmd8M54snkk3p74GZCZvkv7hBI6QA&s',
-                  'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTutZm1WGmd8M54snkk3p74GZCZvkv7hBI6QA&s',
-                  'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTutZm1WGmd8M54snkk3p74GZCZvkv7hBI6QA&s',
-                  'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTutZm1WGmd8M54snkk3p74GZCZvkv7hBI6QA&s',
-                  'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTutZm1WGmd8M54snkk3p74GZCZvkv7hBI6QA&s',
-                  'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTutZm1WGmd8M54snkk3p74GZCZvkv7hBI6QA&s',
-                  'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTutZm1WGmd8M54snkk3p74GZCZvkv7hBI6QA&s',
-                  'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTutZm1WGmd8M54snkk3p74GZCZvkv7hBI6QA&s',
-                  'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTutZm1WGmd8M54snkk3p74GZCZvkv7hBI6QA&s',
-                  'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTutZm1WGmd8M54snkk3p74GZCZvkv7hBI6QA&s',
-                  'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTutZm1WGmd8M54snkk3p74GZCZvkv7hBI6QA&s',
-                  'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTutZm1WGmd8M54snkk3p74GZCZvkv7hBI6QA&s',
-                  'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTutZm1WGmd8M54snkk3p74GZCZvkv7hBI6QA&s',
-                  'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTutZm1WGmd8M54snkk3p74GZCZvkv7hBI6QA&s',
-                  'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTutZm1WGmd8M54snkk3p74GZCZvkv7hBI6QA&s',
-                  'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTutZm1WGmd8M54snkk3p74GZCZvkv7hBI6QA&s',
-                  'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTutZm1WGmd8M54snkk3p74GZCZvkv7hBI6QA&s',
-                ];
-                return MyContainerWithBackground(
-                  name: state.categoryModel![index].name.toString(),
-                  image: imageUrls[index],
+                return InkWell(
+                  onTap: () {
+                    final urlLink = state.categoryModel![index].url.toString();
+                    print("URL HIT ${urlLink}");
+                    final url = urlLink.split('.com/').last;
+                    context
+                        .read<CategoriesBloc>()
+                        .add(CategoriesDetails(url: urlLink));
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => CategoryBeautyView()));
+                  },
+                  child: MyContainerWithBackground(
+                    name: state.categoryModel![index].name.toString(),
+                    image: "",
+                  ),
                 );
               },
             );
@@ -98,12 +86,12 @@ class MyContainerWithBackground extends StatelessWidget {
     return Container(
       width: 200,
       height: 100,
-      decoration: BoxDecoration(
-        image: DecorationImage(
-          image: NetworkImage(image.toString()),
-          fit: BoxFit.cover,
-        ),
-      ),
+      decoration: BoxDecoration(color: Colors.grey
+          // image: DecorationImage(
+          //   image: NetworkImage(image.toString()),
+          //   fit: BoxFit.cover,
+          // ),
+          ),
       child: Center(
         child: Text(
           name,

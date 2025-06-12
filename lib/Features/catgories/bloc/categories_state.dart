@@ -22,12 +22,12 @@ class CategoriesState {
       this.filteredProductsModel,
       this.productDetailsEnum = ProductDetailsEnum.initial,
       this.productImagesModel,
-      this.favouriteProducts =const [] });
+      this.favouriteProducts = const []});
 
   final CategoriesEnum? categoriesEnum;
   List<CategoryModel>? categoryModel;
   final CategoriesBeautyEnum? categoriesBeautyEnum;
-  List<BeautyCatregoryModel>? beautyCatregoryModel;
+  final BeautyCatregoryModel? beautyCatregoryModel;
   final ProductsEnum? productsEnum;
   List<ProductModel>? productsModel;
   final List<ProductModel>? filteredProductsModel;
@@ -39,7 +39,7 @@ class CategoriesState {
       {CategoriesEnum? categoriesEnum,
       List<CategoryModel>? categoryModel,
       CategoriesBeautyEnum? categoriesBeautyEnum,
-      List<BeautyCatregoryModel>? beautyCatregoryModel,
+      BeautyCatregoryModel? beautyCatregoryModel,
       ProductsEnum? productsEnum,
       List<ProductModel>? productsModel,
       List<ProductModel>? filteredProductsModel,
@@ -60,4 +60,3 @@ class CategoriesState {
         favouriteProducts: favouriteProducts ?? this.favouriteProducts);
   }
 }
-
