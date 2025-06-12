@@ -49,15 +49,14 @@ class _CategoriesViewState extends State<CategoriesView> {
                 return InkWell(
                   onTap: () {
                     final urlLink = state.categoryModel![index].url.toString();
-                    print("URL HIT ${urlLink}");
-                    final url = urlLink.split('.com/').last;
+
                     context
                         .read<CategoriesBloc>()
                         .add(CategoriesDetails(url: urlLink));
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => CategoryBeautyView()));
+                            builder: (context) => CategoryDetail(categoryName: state.categoryModel![index].name.toString())));
                   },
                   child: MyContainerWithBackground(
                     name: state.categoryModel![index].name.toString(),
